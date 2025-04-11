@@ -25,6 +25,8 @@ const Login = () => {
         console.log("email", emailRef.current);
         console.log("password", passwordRef.current);
         console.log("Login successful!");
+        router.replace('../(dashboard)');
+        setIsLoading(true);
 
     };
         

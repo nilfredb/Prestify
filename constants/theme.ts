@@ -1,29 +1,42 @@
 import { scale, verticalScale } from "@/utils/styling";
 
 export const colors = {
-  primary: "#a3e635",
-  primaryLight: "#0ea5e9",
-  primaryDark: "#0369a1",
-  text: "#fff",
-  textLight: "#e5e5e5",
-  textLighter: "#d4d4d4",
-  white: "#fff",
-  black: "#000",
-  rose: "#ef4444",
-  green: "#16a34a",
-  neutral50: "#fafafa",
-  neutral100: "#f5f5f5",
-  neutral200: "#e5e5e5",
-  neutral300: "#d4d4d4",
-  neutral350: "#CCCCCC",
-  neutral400: "#a3a3a3",
-  neutral500: "#737373",
-  neutral600: "#A0A4B8",
-  neutral700: "#404040",
-  neutral800: "#262626",
-  neutral900: "#171717",
-  neutral950: "#1C1F2A",
+  /* branding */
+  primary:        '#2563EB', // Indigo 600 – confianza, modernidad
+  primaryLight:   '#60A5FA', // Indigo 400 – hover / focus
+  primaryDark:    '#1E40AF', // Indigo 800 – headers, emphasis
+
+  accent:         '#FACC15', // Amber 400 – llamada a la acción
+  accentDark:     '#CA8A04', // Amber 700
+
+  /* text */
+  text:           '#F9FAFB', // casi blanco
+  textLight:      '#E5E7EB',
+  textLighter:    '#D1D5DB',
+
+  /* feedback */
+  success:        '#10B981', // Emerald 500
+  warning:        '#F97316', // Orange 500
+  danger:         '#EF4444', // Red 500
+
+  /* neutrals */
+  neutral50:  '#F9FAFB',
+  neutral100: '#F3F4F6',
+  neutral200: '#E5E7EB',
+  neutral300: '#D1D5DB',
+  neutral400: '#9CA3AF',
+  neutral500: '#6B7280',
+  neutral600: '#4B5563',
+  neutral700: '#374151',
+  neutral800: '#1F2937',
+  neutral900: '#111827',
+  neutral950: '#0B1120',
+
+  /* utility */
+  white: '#FFFFFF',
+  black: '#000000',
 };
+
 
 export const spacingX = {
   _3: scale(3),
