@@ -5,28 +5,33 @@ import Typo from '@/components/Typo';
 import { spacingX, spacingY, colors } from '@/constants/theme';
 import { verticalScale } from '@/utils/styling';
 import BackButton from '@/components/BackButton';
-import Input from '@/components/Input'; {/*This is ok, just a filename interferences*/}
+import Input from '@/components/Input';
 import * as Icons from 'phosphor-react-native';
 import Button from '@/components/Button';
 import { useRouter } from 'expo-router';
 import { Alert } from 'react-native';
+import { useAuth } from '@/context/authContext';
 
 const Login = () => {
     const emailRef = useRef("");
     const passwordRef = useRef("");
     const [isLoading, setIsLoading] = React.useState(false);
     const router = useRouter();
+    const {login:loginUser} = useAuth();
 
     const handleSubmit = async()=>{
         if(!emailRef.current || !passwordRef.current){
         Alert.alert("Login", "Please fill all the fields");
         return;
         }
-        console.log("email", emailRef.current);
-        console.log("password", passwordRef.current);
-        console.log("Login successful!");
-        router.replace('../(dashboard)');
         setIsLoading(true);
+        const re = await loginUser(emailRef.current, passwordRef.current);
+        setIsLoading(false);
+        if(!re.success){
+            Alert.alert("Login", re.msg);
+        }else{
+            router.replace('/(dashboard)');
+        }
 
     };
         
