@@ -76,6 +76,9 @@ const LoanModal = () => {
   const fadeAnim = useRef(new RNAnimated.Value(0)).current;
   const translateYAnim = useRef(new RNAnimated.Value(500)).current;
 
+  // New state for interest type
+  const [interestType, setInterestType] = useState<'simple' | 'compound'>('simple');
+
   // Fetch client data and available clients
   useEffect(() => {
     // Always fetch available clients for selection
@@ -227,29 +230,34 @@ const LoanModal = () => {
 
   const calculatePaymentDetails = () => {
     const amount = parseFloat(formData.amount) || 0;
-    const interestRate = parseFloat(formData.interestRate) / 100; // Convert percentage to decimal
+    const interestRate = parseFloat(formData.interestRate) / 100;
     const term = parseInt(formData.term) || 1;
-    
-    // Calculate number of payments based on payment frequency
+
     let paymentsPerYear;
     switch (formData.paymentFrequency) {
-      case 'weekly':
-        paymentsPerYear = 52;
-        break;
-      case 'biweekly':
-        paymentsPerYear = 26;
-        break;
+      case 'weekly': paymentsPerYear = 52; break;
+      case 'biweekly': paymentsPerYear = 26; break;
       case 'monthly':
-      default:
-        paymentsPerYear = 12;
-        break;
+      default: paymentsPerYear = 12; break;
     }
-    
+
     const totalPayments = term * (formData.paymentFrequency === 'monthly' ? 1 : (paymentsPerYear / 12));
-    const totalInterest = amount * interestRate * term;
-    const totalAmount = amount + totalInterest;
-    const paymentAmount = totalAmount / totalPayments;
-    
+
+    let totalAmount, totalInterest, paymentAmount;
+
+    if (interestType === 'compound') {
+      // Interés compuesto: A = P * (1 + r/n)^(n*t)
+      const n = paymentsPerYear;
+      totalAmount = amount * Math.pow(1 + interestRate / n, n * term);
+      totalInterest = totalAmount - amount;
+      paymentAmount = totalAmount / totalPayments;
+    } else {
+      // Interés simple
+      totalInterest = amount * interestRate * term;
+      totalAmount = amount + totalInterest;
+      paymentAmount = totalAmount / totalPayments;
+    }
+
     return {
       paymentAmount: paymentAmount.toFixed(2),
       totalInterest: totalInterest.toFixed(2),
@@ -529,6 +537,45 @@ const LoanModal = () => {
                         containerStyle={styles.inputContainer}
                       />
                     </View>
+
+                    <View style={styles.inputGroup}>
+                      <View style={styles.labelContainer}>
+                        <Icon.Percent size={16} color={colors.primary} />
+                        <Typo color={colors.neutral200}>Tipo de Interés</Typo>
+                      </View>
+                      <View style={styles.frequencyContainer}>
+                        <TouchableOpacity
+                          style={[
+                            styles.frequencyOption,
+                            interestType === 'simple' && styles.activeFrequency
+                          ]}
+                          onPress={() => setInterestType('simple')}
+                        >
+                          <Typo
+                            size={12}
+                            color={interestType === 'simple' ? colors.white : colors.neutral400}
+                            style={{fontWeight: interestType === 'simple' ? '600' : '400'}}
+                          >
+                            Simple
+                          </Typo>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={[
+                            styles.frequencyOption,
+                            interestType === 'compound' && styles.activeFrequency
+                          ]}
+                          onPress={() => setInterestType('compound')}
+                        >
+                          <Typo
+                            size={12}
+                            color={interestType === 'compound' ? colors.white : colors.neutral400}
+                            style={{fontWeight: interestType === 'compound' ? '600' : '400'}}
+                          >
+                            Compuesto
+                          </Typo>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
                   </View>
                 </Animated.View>
 
@@ -609,6 +656,16 @@ const LoanModal = () => {
                           <Typo size={12} color={colors.neutral400}>Interés (%)</Typo>
                           <Typo size={16} style={{fontWeight: '600'}} color={colors.text}>
                             {formData.interestRate}%
+                          </Typo>
+                        </View>
+
+                        <View style={styles.paymentGridItem}>
+                          <View style={styles.paymentIconContainer}>
+                            <Icon.Percent size={16} color={colors.primary} />
+                          </View>
+                          <Typo size={12} color={colors.neutral400}>Tipo de interés</Typo>
+                          <Typo size={16} style={{fontWeight: '600'}} color={colors.text}>
+                            {interestType === 'compound' ? 'Compuesto' : 'Simple'}
                           </Typo>
                         </View>
                       </View>
@@ -922,6 +979,7 @@ const styles = StyleSheet.create({
     minHeight: 100,
     textAlignVertical: 'top',
     paddingTop: verticalScale(10),
+    color: colors.white,
   },
   summaryCard: {
     backgroundColor: colors.neutral900,
