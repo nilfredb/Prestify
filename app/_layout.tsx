@@ -1,39 +1,61 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
+// app/_layout.tsx
+import { StyleSheet } from 'react-native';
 import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+import { AuthProvider } from '@/context/authContext';
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+import * as Notifications from 'expo-notifications';
+import { NotificationProvider } from '@/context/NotificationContext';
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
+    <NotificationProvider>
+    <AuthProvider>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="(dashboard)" options={{ headerShown: false }} />
+        <Stack.Screen 
+          name="(modals)/profileModal"
+          options={{ 
+            presentation: 'modal',
+            headerShown: false,
+            animation: 'slide_from_bottom'
+          }} 
+        />
+        <Stack.Screen 
+          name="(modals)/walletModal"
+          options={{ 
+            presentation: 'modal',
+            headerShown: false,
+            animation: 'slide_from_bottom'
+          }} 
+        />
+        {/* Add the client modal */}
+        <Stack.Screen 
+          name="(modals)/clientModal"
+          options={{ 
+            presentation: 'modal',
+            headerShown: false,
+            animation: 'slide_from_bottom'
+          }} 
+        />
+        {/* Add client detail page */}
+        <Stack.Screen 
+          name="client/[id]"
+          options={{ 
+            headerShown: false
+          }} 
+        />
       </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    </AuthProvider>
+    </NotificationProvider>
   );
 }
+
+const styles = StyleSheet.create({});

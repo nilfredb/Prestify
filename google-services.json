@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "97931893149",
+    "project_id": "notifications-cd186",
+    "storage_bucket": "notifications-cd186.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:97931893149:android:326bda1507b8b3e50d7774",
+        "android_client_info": {
+          "package_name": "com.nilfred.expensetrackerapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoF1Eb-ibgcd5Cm7gg5jla8mrehkUSNq0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
