@@ -127,19 +127,19 @@ npx expo start
 ## Capturas del sistema
 
 ### Pantalla de inicio
-![Inicio](./resources/4.jpeg)
+![Inicio](./assets/screenshots/4.jpeg)
 
 ### Pantalla de registro
-![Registro](./resources/5.jpeg)
+![Registro](./assets/screenshots/5.jpeg)
 
 ### Dashboard principal
-![Dashboard](./resources/3.jpeg)
+![Dashboard](./assets/screenshots/3.jpeg)
 
 ### Módulo de clientes
-![Clientes](./resources/2.jpeg)
+![Clientes](./assets/screenshots/2.jpeg)
 
 ### Módulo de préstamos
-![Prestamos](./resources/1.jpeg)
+![Prestamos](./assets/screenshots/1.jpeg)
 
 ## Descripción de módulos principales
 
@@ -189,6 +189,3 @@ La versión actual **no incluye**:
 
 Este README está pensado para la rama `main`, por lo que se enfoca en la descripción general del proyecto, sus módulos principales y la configuración esencial. Los detalles internos de pruebas, QA o flujos de testing pueden mantenerse en documentación aparte.
 
-## Licencia
-
-Agrega aquí la información de licencia correspondiente al proyecto.
