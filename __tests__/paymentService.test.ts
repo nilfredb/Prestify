@@ -49,6 +49,7 @@ describe('paymentService', () => {
       path: args,
     }));
     mockAddDoc.mockResolvedValue({ id: 'payment-1' });
+
     mockUpdateLoanBalanceAfterPayment.mockResolvedValue({
       success: true,
       data: {
@@ -73,21 +74,28 @@ describe('paymentService', () => {
     expect(result.data.status).toBe('pending');
   });
 
-    it('crea un pago confirmado con receiptImage string y actualiza el préstamo', async () => {
-    const result = await createPayment({
-        loanId: 'loan-1',
-        uid: 'user-1',
-        amount: 100,
-        paymentDate: new Date('2026-04-17'),
-        paymentMethod: 'cash',
-        status: 'confirmed',
-        receiptImage: 'https://cloudinary.com/receipt.png',
+  it('crea un pago confirmado con recibo y actualiza el préstamo', async () => {
+    mockUploadFileToCloudinary.mockResolvedValue({
+      success: true,
+      data: 'https://cloudinary.com/receipt.png',
     });
 
+    const result = await createPayment({
+      loanId: 'loan-1',
+      uid: 'user-1',
+      amount: 100,
+      paymentDate: new Date('2026-04-17'),
+      paymentMethod: 'cash',
+      status: 'confirmed',
+      receiptImage: 'file://receipt.png' as any,
+    });
+
+    expect(mockUploadFileToCloudinary).toHaveBeenCalled();
     expect(mockUpdateLoanBalanceAfterPayment).toHaveBeenCalledWith('loan-1', 100);
     expect(result.success).toBe(true);
     expect(result.data.receiptImage).toBe('https://cloudinary.com/receipt.png');
-    });
+  });
+
   it('actualiza un pago pendiente a confirmado y sincroniza el préstamo', async () => {
     mockGetDoc.mockResolvedValue({
       exists: () => true,

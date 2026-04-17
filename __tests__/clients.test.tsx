@@ -1,5 +1,4 @@
 import React from 'react';
-import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { render, fireEvent } from '@testing-library/react-native';
 import Clients from '../app/(dashboard)/clients';
 
@@ -28,18 +27,49 @@ jest.mock('@/components/Button', () => {
       React.createElement(Text, null, children)
     );
 });
-jest.mock('@/components/Loading', () => () => <Text>Loading...</Text>);
-jest.mock('expo-image', () => ({ Image: (props: any) => <View {...props} /> }));
-jest.mock('expo-blur', () => ({ BlurView: ({ children }: any) => <View>{children}</View> }));
+
+jest.mock('@/components/Loading', () => {
+  const React = require('react');
+  const { Text } = require('react-native');
+  return () => React.createElement(Text, null, 'Loading...');
+});
+
+jest.mock('expo-image', () => {
+  const React = require('react');
+  const { View } = require('react-native');
+  return {
+    Image: (props: any) => React.createElement(View, props),
+  };
+});
+
+jest.mock('expo-blur', () => {
+  const React = require('react');
+  const { View } = require('react-native');
+  return {
+    BlurView: ({ children }: any) => React.createElement(View, null, children),
+  };
+});
+
 jest.mock('expo-router', () => ({
   useRouter: () => ({ push: mockPush }),
   router: { push: mockPush },
 }));
+
 jest.mock('@/context/authContext', () => ({
   useAuth: () => ({ user: { uid: 'user-1' } }),
 }));
-jest.mock('@/hooks/useFetchClients', () => (...args: any[]) => mockUseFetchClients(...args));
-jest.mock('@/services/imageServices', () => ({ getProfileImage: jest.fn(() => null) }));
+
+jest.mock('@/hooks/useFetchClients', () => (...args: any[]) =>
+  mockUseFetchClients(...args)
+);
+
+jest.mock('@/services/imageServices', () => ({
+  getProfileImage: jest.fn(() => null),
+}));
+
+jest.mock('firebase/firestore', () => ({
+  where: jest.fn(),
+}));
 
 describe('Clients screen', () => {
   beforeEach(() => {
@@ -47,15 +77,25 @@ describe('Clients screen', () => {
   });
 
   it('muestra el estado vacío cuando no hay clientes', () => {
-    mockUseFetchClients.mockReturnValue({ clients: [], loading: false, error: null });
+    mockUseFetchClients.mockReturnValue({
+      clients: [],
+      loading: false,
+      error: null,
+    });
 
     const { getByText } = render(<Clients />);
 
-    expect(getByText('No hay clientes. Toca el botón + para agregar uno.')).toBeTruthy();
+    expect(
+      getByText('No hay clientes. Toca el botón + para agregar uno.')
+    ).toBeTruthy();
   });
 
   it('redirige al modal para agregar cliente', () => {
-    mockUseFetchClients.mockReturnValue({ clients: [], loading: false, error: null });
+    mockUseFetchClients.mockReturnValue({
+      clients: [],
+      loading: false,
+      error: null,
+    });
 
     const { getByText } = render(<Clients />);
 
