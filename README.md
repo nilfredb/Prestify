@@ -127,19 +127,19 @@ npx expo start
 ## Capturas del sistema
 
 ### Pantalla de inicio
-![Inicio](./assets/screenshots/4.jpeg)
+<img src="./assets/screenshots/4.jpeg" alt="Login" width="350">
 
 ### Pantalla de registro
-![Registro](./assets/screenshots/5.jpeg)
+<img src="./assets/screenshots/5.jpeg" alt="Login" width="350">
 
 ### Dashboard principal
-![Dashboard](./assets/screenshots/3.jpeg)
+<img src="./assets/screenshots/3.jpeg" alt="Login" width="350">
 
 ### Módulo de clientes
-![Clientes](./assets/screenshots/2.jpeg)
+<img src="./assets/screenshots/s.jpeg" alt="Login" width="350">
 
 ### Módulo de préstamos
-![Prestamos](./assets/screenshots/1.jpeg)
+<img src="./assets/screenshots/1.jpeg" alt="Login" width="350">
 
 ## Descripción de módulos principales
 
