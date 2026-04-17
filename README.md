@@ -136,7 +136,7 @@ npx expo start
 <img src="./assets/screenshots/3.jpeg" alt="Login" width="350">
 
 ### Módulo de clientes
-<img src="./assets/screenshots/s.jpeg" alt="Login" width="350">
+<img src="./assets/screenshots/2.jpeg" alt="Login" width="350">
 
 ### Módulo de préstamos
 <img src="./assets/screenshots/1.jpeg" alt="Login" width="350">
