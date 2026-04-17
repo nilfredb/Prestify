@@ -31,16 +31,43 @@ jest.mock('@/components/Typo', () => {
   const { Text } = require('react-native');
   return ({ children }: any) => React.createElement(Text, null, children);
 });
-jest.mock('@/components/Input', () => (props: any) => <TextInput {...props} />);
-jest.mock('@/components/Button', () => ({ children, onPress }: any) => (
-  <TouchableOpacity onPress={onPress}>
-    <Text>{children}</Text>
-  </TouchableOpacity>
-));
-jest.mock('@/components/Loading', () => () => <Text>Loading...</Text>);
-jest.mock('@/components/CustomAlert', () => ({ visible, title, message }: any) => (
-  visible ? <Text>{`${title}: ${message}`}</Text> : null
-));
+jest.mock('@/components/Input', () => {
+  const React = require('react');
+  const { TextInput } = require('react-native');
+  return (props: any) => React.createElement(TextInput, props);
+});
+
+jest.mock('@/components/Button', () => {
+  const React = require('react');
+  const { TouchableOpacity, Text } = require('react-native');
+  return ({ children, onPress }: any) =>
+    React.createElement(
+      TouchableOpacity,
+      { onPress },
+      React.createElement(Text, null, children)
+    );
+});
+
+jest.mock('@/components/Loading', () => {
+  const React = require('react');
+  const { Text } = require('react-native');
+  return () => React.createElement(Text, null, 'Loading...');
+});
+
+jest.mock('@/components/CustomAlert', () => {
+  const React = require('react');
+  const { Text } = require('react-native');
+  return ({ visible, title, message }: any) =>
+    visible ? React.createElement(Text, null, `${title}: ${message}`) : null;
+});
+
+jest.mock('moti', () => {
+  const React = require('react');
+  const { View } = require('react-native');
+  return {
+    ScrollView: ({ children }: any) => React.createElement(View, null, children),
+  };
+});
 
 jest.mock('@/services/imageServices', () => ({ getProfileImage: jest.fn(() => null) }));
 jest.mock('expo-router', () => ({
